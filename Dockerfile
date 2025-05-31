@@ -1,5 +1,5 @@
 # ✅ Raspberry Pi는 ARM이므로 node:18-alpine 사용 (경량)
-FROM node:18-alpine
+FROM node:18-slim 
 
 # 앱 디렉토리 생성
 WORKDIR /app
