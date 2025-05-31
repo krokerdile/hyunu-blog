@@ -4,7 +4,14 @@ import matter from "gray-matter";
 
 const POSTS_PATH = path.join(process.cwd(), "content/posts");
 
-export function getAllPosts() {
+export interface BlogPostMeta {
+  slug: string;
+  title: string;
+  date: string;
+  summary?: string;
+}
+
+export function getAllPosts(): BlogPostMeta[] {
   return fs.readdirSync(POSTS_PATH).map((filename) => {
     const filePath = path.join(POSTS_PATH, filename);
     const source = fs.readFileSync(filePath, "utf8");
@@ -12,7 +19,9 @@ export function getAllPosts() {
 
     return {
       slug: filename.replace(".mdx", ""),
-      ...data,
+      title: data.title,
+      date: data.date,
+      summary: data.summary,
     };
   });
 }
