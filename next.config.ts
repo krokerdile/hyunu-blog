@@ -7,6 +7,7 @@ const withMDX = mdx({
 
 const baseConfig: NextConfig = {
   pageExtensions: ["ts", "tsx", "mdx"], // MDX 파일 인식
+  transpilePackages: ["next-mdx-remote"],
 };
 
 export default withMDX(baseConfig);
