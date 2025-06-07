@@ -12,16 +12,19 @@ export interface BlogPostMeta {
 }
 
 export function getAllPosts(): BlogPostMeta[] {
-  return fs.readdirSync(POSTS_PATH).map((filename) => {
-    const filePath = path.join(POSTS_PATH, filename);
-    const source = fs.readFileSync(filePath, "utf8");
-    const { data } = matter(source);
+  return fs
+    .readdirSync(POSTS_PATH)
+    .map((filename) => {
+      const filePath = path.join(POSTS_PATH, filename);
+      const source = fs.readFileSync(filePath, "utf8");
+      const { data } = matter(source);
 
-    return {
-      slug: filename.replace(".mdx", ""),
-      title: data.title,
-      date: data.date,
-      summary: data.summary,
-    };
-  });
+      return {
+        slug: filename.replace(".mdx", ""),
+        title: data.title,
+        date: data.date,
+        summary: data.summary,
+      };
+    })
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
