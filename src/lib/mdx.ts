@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 
-const POSTS_PATH = path.join(process.cwd(), "content/posts");
+const POSTS_PATH = path.join(process.cwd(), "src/content/posts");
 
 export interface BlogPostMeta {
   slug: string;

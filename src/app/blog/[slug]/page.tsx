@@ -1,18 +1,26 @@
 import fs from "fs";
 import path from "path";
 import { compileMDX } from "next-mdx-remote/rsc";
+import { allMdxComponents } from "@/components/mdx-components";
+import remarkGfm from 'remark-gfm'
 
 interface Params {
   params: { slug: string };
 }
 
-export default async function BlogPostPage({ params }: Params) {
-  const filePath = path.join(process.cwd(), "content/posts", `${params.slug}.mdx`);
+export default async function BlogPostPage(props: Params) {
+  const params = await props.params;
+  const filePath = path.join(process.cwd(), "src/content/posts", `${params.slug}.mdx`);
   const source = fs.readFileSync(filePath, "utf-8");
 
-  const { content, frontmatter } = await compileMDX({
+  const { content, frontmatter } = await compileMDX<{ title: string; date: string }>({
     source,
-    options: { parseFrontmatter: true },
+    components: allMdxComponents,
+      options: {
+          parseFrontmatter: true,
+          mdxOptions: {
+      remarkPlugins: [remarkGfm], // ✅ 추가!
+    },},
   });
 
   return (
