@@ -1,0 +1,52 @@
+---
+title: "무한 스크롤 구현기와 최적화 고민 (면접 회고 포함)"
+description: "Next.js 기반 블로그에서 IntersectionObserver로 무한 스크롤을 구현하고, 성능 최적화에 대해 고민한 내용을 기록합니다."
+date: "2025-06-01"
+tags: ["무한 스크롤", "IntersectionObserver", "리액트 최적화", "Next.js", "면접 복기"]
+---
+import InfiniteScrollBlogPage from '@/components/InfiniteScrollBlogPage'
+import {MdxLayout} from '@/components/mdx-layout'
+
+
+# 🌀 무한 스크롤 구현기와 최적화 고민
+
+블로그를 개발하면서 무한 스크롤을 직접 구현해보았습니다.  
+특히 **네이버 면접** 당시 받았던 질문 중 하나가 아직도 인상 깊게 남아 있는데요:
+
+> ❓ 사용자가 계속 데이터를 요청하고, 이미 수백 개의 DOM이 렌더링되어 있을 때 성능을 어떻게 최적화할 수 있을까요?
+
+당시에는 제대로 답변하지 못했지만, 지금은 비교적 명확하게 설명할 수 있게 되었습니다.  
+이 글에서는 무한 스크롤 구현 방식, 성능 최적화 전략, 그리고 면접 질문에 대한 복기 내용을 공유해보려고 합니다.
+
+---
+## 🚧 최적화 고민
+
+### 1. 가상 스크롤 (Virtualization)
+
+모든 DOM 요소를 렌더링하지 않고, **현재 보이는 영역만 렌더링**하여 성능을 최적화하는 기법입니다.
+
+- 대표 라이브러리: `react-virtual`, `react-window`
+- `TanStack Table`과 함께 사용하면 리스트/테이블 최적화에 탁월
+
+```tsx
+const rowVirtualizer = useVirtualizer({
+  count: items.length,
+  getScrollElement: () => parentRef.current,
+  estimateSize: () => 100,
+})
+```
+
+---
+
+## 📐 구현 방식 요약
+
+- `IntersectionObserver`를 활용하여 마지막 요소가 뷰포트에 들어오면 다음 데이터를 로딩  
+- `useState`, `useRef`로 상태 관리 및 ref 추적  
+- 더미 데이터를 페이지 단위로 생성해서 테스트
+
+👇 아래는 실제 테스트 페이지입니다. 스크롤을 내려보세요!
+
+<InfiniteScrollBlogPage />
+
+---
+
