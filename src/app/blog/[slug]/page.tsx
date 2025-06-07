@@ -9,8 +9,8 @@ interface Params {
 }
 
 export default async function BlogPostPage(props: Params) {
-  const params = await props.params;
-  const filePath = path.join(process.cwd(), "src/content/posts", `${params.slug}.mdx`);
+  const { slug } = props.params;
+  const filePath = path.join(process.cwd(), "src/content/posts", `${slug}.mdx`);
   const source = fs.readFileSync(filePath, "utf-8");
 
   const { content, frontmatter } = await compileMDX<{ title: string; date: string }>({
