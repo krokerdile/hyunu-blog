@@ -10,15 +10,15 @@ type PageParams = {
 };
 
 type PageProps = {
-  params: PageParams; 
+  params: Promise<PageParams>;
   searchParams: Record<string, string | string[] | undefined>;
 };
 
 export async function generateMetadata(
   props: PageProps
 ): Promise<Metadata> {
-  const { slug } = props.params; // ✅ 수정: 더 이상 await 필요 없음
-
+  const params = await props.params;
+  const { slug } = params;
   const filePath = path.join(
     process.cwd(),
     "src/content/posts",
@@ -48,8 +48,8 @@ export async function generateMetadata(
 }
 
 export default async function BlogPostPage(props: PageProps) {
-  const { slug } = props.params; // ✅ 수정: 더 이상 await 필요 없음
-
+  const params = await props.params;
+  const { slug } = params;
   const filePath = path.join(process.cwd(), "src/content/posts", `${slug}.mdx`);
   const source = fs.readFileSync(filePath, "utf-8");
 
