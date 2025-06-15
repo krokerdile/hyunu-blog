@@ -5,13 +5,12 @@ import { allMdxComponents } from "@/components/mdx-components";
 import remarkGfm from "remark-gfm";
 import type { Metadata } from "next";
 
-type Props = {
+type PageProps = {
   params: { slug: string }
-  searchParams: { [key: string]: string | string[] | undefined }
 }
 
 export async function generateMetadata(
-  { params }: Props
+  { params }: PageProps
 ): Promise<Metadata> {
   const { slug } = params;
   const filePath = path.join(
@@ -40,10 +39,6 @@ export async function generateMetadata(
     title: frontmatter.title,
     description: frontmatter.description ?? frontmatter.summary,
   };
-}
-
-type PageProps = {
-  params: { slug: string }
 }
 
 export default async function BlogPostPage({ params }: PageProps) {
