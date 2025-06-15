@@ -42,7 +42,11 @@ export async function generateMetadata(
   };
 }
 
-export default async function BlogPostPage({ params }: Props) {
+type PageProps = {
+  params: { slug: string }
+}
+
+export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = params;
   const filePath = path.join(process.cwd(), "src/content/posts", `${slug}.mdx`);
   const source = fs.readFileSync(filePath, "utf-8");
