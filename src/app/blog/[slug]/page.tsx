@@ -7,22 +7,22 @@ import type { Metadata } from "next";
 
 type PageParams = {
   slug: string;
-}
+};
 
 type PageProps = {
-  params: Promise<PageParams>;
+  params: PageParams; 
   searchParams: Record<string, string | string[] | undefined>;
-}
+};
 
 export async function generateMetadata(
   props: PageProps
 ): Promise<Metadata> {
-  const params = await props.params;
-  const { slug } = params;
+  const { slug } = props.params; // ✅ 수정: 더 이상 await 필요 없음
+
   const filePath = path.join(
     process.cwd(),
     "src/content/posts",
-    `${slug}.mdx`,
+    `${slug}.mdx`
   );
   const source = fs.readFileSync(filePath, "utf-8");
 
@@ -48,12 +48,15 @@ export async function generateMetadata(
 }
 
 export default async function BlogPostPage(props: PageProps) {
-  const params = await props.params;
-  const { slug } = params;
+  const { slug } = props.params; // ✅ 수정: 더 이상 await 필요 없음
+
   const filePath = path.join(process.cwd(), "src/content/posts", `${slug}.mdx`);
   const source = fs.readFileSync(filePath, "utf-8");
 
-  const { content, frontmatter } = await compileMDX<{ title: string; date: string }>({
+  const { content, frontmatter } = await compileMDX<{
+    title: string;
+    date: string;
+  }>({
     source,
     components: allMdxComponents,
     options: {
