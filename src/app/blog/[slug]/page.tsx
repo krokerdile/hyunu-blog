@@ -5,14 +5,15 @@ import { allMdxComponents } from "@/components/mdx-components";
 import remarkGfm from "remark-gfm";
 import type { Metadata } from "next";
 
-interface Params {
-  params: { slug: string };
+type Props = {
+  params: { slug: string }
+  searchParams: { [key: string]: string | string[] | undefined }
 }
 
 export async function generateMetadata(
-  props: Params,
+  { params }: Props
 ): Promise<Metadata> {
-  const { slug } = props.params;
+  const { slug } = params;
   const filePath = path.join(
     process.cwd(),
     "src/content/posts",
@@ -41,19 +42,20 @@ export async function generateMetadata(
   };
 }
 
-export default async function BlogPostPage(props: Params) {
-  const { slug } = props.params;
+export default async function BlogPostPage({ params }: Props) {
+  const { slug } = params;
   const filePath = path.join(process.cwd(), "src/content/posts", `${slug}.mdx`);
   const source = fs.readFileSync(filePath, "utf-8");
 
   const { content, frontmatter } = await compileMDX<{ title: string; date: string }>({
     source,
     components: allMdxComponents,
-      options: {
-          parseFrontmatter: true,
-          mdxOptions: {
-      remarkPlugins: [remarkGfm], // ✅ 추가!
-    },},
+    options: {
+      parseFrontmatter: true,
+      mdxOptions: {
+        remarkPlugins: [remarkGfm],
+      },
+    },
   });
 
   return (
