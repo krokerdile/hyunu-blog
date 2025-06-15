@@ -26,6 +26,7 @@ jobs:
         env:
           # 필요한 환경 변수들을 여기에 추가하세요
           NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
+          NEXT_PUBLIC_TEST_VAR: "test-value-$(date +%s)"  # 테스트용 환경 변수 추가
 
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v25
