@@ -4,6 +4,7 @@ import { compileMDX } from "next-mdx-remote/rsc";
 import { allMdxComponents } from "@/components/mdx-components";
 import remarkGfm from "remark-gfm";
 import type { Metadata } from "next";
+import MdxLayout from "@/components/mdx-layout";
 
 type PageParams = {
   slug: string;
@@ -68,10 +69,10 @@ export default async function BlogPostPage(props: PageProps) {
   });
 
   return (
-    <article className="prose dark:prose-invert p-6 max-w-2xl mx-auto">
+    <MdxLayout>
       <h1>{frontmatter.title}</h1>
       <p className="text-gray-500 text-sm">{frontmatter.date}</p>
       {content}
-    </article>
+    </MdxLayout>
   );
 }
