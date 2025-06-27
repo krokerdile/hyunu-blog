@@ -13,6 +13,7 @@ export default function ArrayVisualization() {
   const [cArray] = useState([1, 2, 3, 4, 5])
   const [inputValue, setInputValue] = useState("")
   const [operationTime, setOperationTime] = useState<{ operation: string; time: number } | null>(null)
+  const [tabValue, setTabValue] = useState("comparison")
 
   const measureTime = (operation: () => void, operationName: string) => {
     const start = performance.now()
@@ -55,11 +56,11 @@ export default function ArrayVisualization() {
     <div className="space-y-6">
       <Tabs defaultValue="comparison" className="w-full">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="comparison">JS vs C 배열 비교</TabsTrigger>
-          <TabsTrigger value="operations">배열 연산 성능</TabsTrigger>
+          <TabsTrigger triggerValue="comparison" currentValue={tabValue} setValue={setTabValue}>JS vs C 배열 비교</TabsTrigger>
+          <TabsTrigger triggerValue="operations" currentValue={tabValue} setValue={setTabValue}>배열 연산 성능</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="comparison" className="space-y-4">
+        <TabsContent contentValue="comparison" currentValue={tabValue} className="space-y-4">
           <div className="grid md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
@@ -117,7 +118,7 @@ export default function ArrayVisualization() {
           </div>
         </TabsContent>
 
-        <TabsContent value="operations" className="space-y-4">
+        <TabsContent contentValue="operations" currentValue={tabValue} className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle>배열 연산 성능 테스트</CardTitle>

@@ -7,7 +7,7 @@ export function Tabs({ defaultValue, className, children }: { defaultValue?: str
     <div className={cn("w-full", className)}>
       {React.Children.map(children, (child) => {
         if (React.isValidElement(child)) {
-          return React.cloneElement(child as any, { value, setValue })
+          return React.cloneElement(child as React.ReactElement<Record<string, unknown>>, { currentValue: value, setValue })
         }
         return child
       })}
@@ -15,12 +15,23 @@ export function Tabs({ defaultValue, className, children }: { defaultValue?: str
   )
 }
 
-export function TabsList({ className, children }: { className?: string; children: React.ReactNode }) {
+interface TabsListProps {
+  className?: string;
+  children: React.ReactNode;
+}
+export function TabsList({ className, children }: TabsListProps) {
   return <div className={cn("flex border-b mb-4", className)}>{children}</div>
 }
 
-export function TabsTrigger({ value: triggerValue, value, setValue, children, className }: any) {
-  const isActive = value === triggerValue
+interface TabsTriggerProps {
+  triggerValue: string;
+  setValue: (v: string) => void;
+  children: React.ReactNode;
+  className?: string;
+  currentValue: string;
+}
+export function TabsTrigger({ triggerValue, currentValue, setValue, children, className }: TabsTriggerProps) {
+  const isActive = currentValue === triggerValue
   return (
     <button
       className={cn(
@@ -36,7 +47,13 @@ export function TabsTrigger({ value: triggerValue, value, setValue, children, cl
   )
 }
 
-export function TabsContent({ value: contentValue, value, children, className }: any) {
-  if (value !== contentValue) return null
+interface TabsContentProps {
+  contentValue: string;
+  children: React.ReactNode;
+  className?: string;
+  currentValue: string;
+}
+export function TabsContent({ contentValue, currentValue, children, className }: TabsContentProps) {
+  if (currentValue !== contentValue) return null
   return <div className={cn("mt-2", className)}>{children}</div>
 } 
